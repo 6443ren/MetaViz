@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>算法可视化教学平台</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span class="brand-mark" aria-hidden="true">
+                <svg class="ico" viewBox="0 0 24 24"><path d="M5 20V14M11 20V9M17 20V4"/><path d="M3.5 20.5h17"/></svg>
+            </span>
+            <span class="brand-block">
+                <span class="brand-text">算法可视化</span>
+                <span class="brand-sub">Algorithm Lab</span>
+            </span>
+        </div>
+        <div class="nav-tabs">
+            <button class="nav-tab active" data-module="sorting">
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V13M9 19V8M14 19V5M19 19V10"/></svg>
+                <span class="tab-text">排序算法</span>
+            </button>
+            <button class="nav-tab" data-module="binarytree">
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5.2" r="2.2"/><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="18" r="2.2"/><path d="M12 7.4v4.1M12 11.5H6v4.3M12 11.5h6v4.3"/></svg>
+                <span class="tab-text">二叉树</span>
+            </button>
+            <button class="nav-tab" data-module="graph">
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.8" cy="16.5" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="17.2" cy="17.5" r="2"/><path d="M7.7 15.5L16 7.2M8 17.8h7.2"/></svg>
+                <span class="tab-text">图寻路</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="main-container">
+        <!-- 控制面板 -->
+        <aside class="control-panel">
+            <div class="panel-section">
+                <h3 class="section-title">
+                    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="7.5"/><circle cx="12" cy="12" r="2.5"/></svg>
+                    算法选择
+                </h3>
+                <div id="algorithmSelector" class="algorithm-selector">
+                    <!-- 动态填充 -->
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="section-title">
+                    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h11M18.5 7H20M4 17h4M11.5 17H20"/><circle cx="16" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
+                    动画控制
+                </h3>
+                <div class="control-buttons">
+                    <button id="btnPlay" class="btn btn-primary" disabled>
+                        <span class="btn-icon"><svg class="ico ico-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 6.2l9 5.8-9 5.8z"/></svg></span> 播放
+                    </button>
+                    <button id="btnPause" class="btn btn-secondary" disabled>
+                        <span class="btn-icon"><svg class="ico" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true"><path d="M9.5 6.5v11M14.5 6.5v11"/></svg></span> 暂停
+                    </button>
+                    <button id="btnStep" class="btn btn-accent" disabled>
+                        <span class="btn-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path class="ico-fill" d="M7 6.6l7.5 5.4L7 17.4z"/><path d="M17.5 6.5v11"/></svg></span> 单步
+                    </button>
+                    <button id="btnReset" class="btn btn-outline">
+                        <span class="btn-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 12a7.2 7.2 0 101.55-4.45"/><path d="M4.2 4.8v4.2h4.2"/></svg></span> 重置
+                    </button>
+                </div>
+                <div class="speed-control">
+                    <label for="speedSlider">速度</label>
+                    <input type="range" id="speedSlider" min="1" max="100" value="40">
+                    <span id="speedValue" class="speed-value">140ms</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h3 class="section-title">
+                    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l8 4.3-8 4.3-8-4.3z"/><path d="M4 12l8 4.3 8-4.3M4 16.4l8 4.3 8-4.3"/></svg>
+                    数据设置
+                </h3>
+                <div class="data-control">
+                    <label for="dataSize" id="dataLabel">数据规模</label>
+                    <input type="range" id="dataSize" min="5" max="50" value="20">
+                    <span id="dataSizeValue" class="size-value">20</span>
+                </div>
+                <button id="btnGenerate" class="btn btn-full btn-secondary">
+                    <span class="btn-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 8.5h13M13.5 5.5l3 3-3 3M20.5 15.5h-13M10.5 12.5l-3 3 3 3"/></svg></span> 生成新数据
+                </button>
+                <div class="data-presets">
+                    <button class="preset-btn" data-preset="random">随机</button>
+                    <button class="preset-btn" data-preset="sorted">已排序</button>
+                    <button class="preset-btn" data-preset="reverse">逆序</button>
+                    <button class="preset-btn" data-preset="nearly">近有序</button>
+                </div>
+            </div>
+
+            <!-- 复杂度对比 -->
+            <div class="panel-section compare-section">
+                <h3 class="section-title">
+                    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 20.5h17"/><path d="M7 20.5V13M12 20.5V7.5M17 20.5v-5.5"/></svg>
+                    复杂度对比
+                </h3>
+                <div id="complexityCompare" class="complexity-compare">
+                    <!-- 动态填充 -->
+                </div>
+                <button id="btnCompare" class="btn btn-full btn-compare">
+                    <span class="btn-icon"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13.6" r="7.1"/><path d="M12 10.2v3.6l2.6 1.5M9.6 3.6h4.8M12 3.6v2.9"/></svg></span> 运行对比测试
+                </button>
+            </div>
+        </aside>
+
+        <!-- 可视化区域 -->
+        <section class="visualization-area">
+            <!-- 排序算法模块 -->
+            <div id="sortingModule" class="module active">
+                <div class="module-header">
+                    <h2 id="sortingTitle">冒泡排序</h2>
+                    <div id="sortingStats" class="stats-bar">
+                        <span class="stat-item">
+                            <span class="stat-label">比较次数</span>
+                            <span id="sortComparisons" class="stat-value">0</span>
+                        </span>
+                        <span class="stat-item">
+                            <span class="stat-label">交换次数</span>
+                            <span id="sortSwaps" class="stat-value">0</span>
+                        </span>
+                        <span class="stat-item">
+                            <span class="stat-label">步数</span>
+                            <span id="sortStep" class="stat-value">0 / 0</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="sortingCanvas"></canvas>
+                </div>
+                <div id="sortStepInfo" class="step-info" data-tone="idle">
+                    <span class="dot"></span>
+                    <span class="step-text">准备就绪 — 点击「播放」开始演示</span>
+                </div>
+                <div class="legend">
+                    <span class="legend-item"><i class="legend-swatch default"></i>待排序</span>
+                    <span class="legend-item"><i class="legend-swatch compare"></i>正在比较</span>
+                    <span class="legend-item"><i class="legend-swatch swap"></i>正在交换</span>
+                    <span class="legend-item"><i class="legend-swatch write"></i>写入赋值</span>
+                    <span class="legend-item"><i class="legend-swatch sorted"></i>已归位</span>
+                </div>
+                <div class="algorithm-info">
+                    <div class="info-card">
+                        <h4><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 11v5.5M12 7.9v.3"/></svg>算法说明</h4>
+                        <p id="sortingDesc">冒泡排序是一种简单的排序算法，它重复地遍历要排序的数列，一次比较两个元素，如果它们的顺序错误就把它们交换过来。</p>
+                    </div>
+                    <div class="info-card">
+                        <h4><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.2 18a7.8 7.8 0 1115.6 0"/><path d="M12 18l4.4-5.4"/></svg>复杂度分析</h4>
+                        <div id="sortingComplexity" class="complexity-grid">
+                            <!-- 动态填充 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 二叉树模块 -->
+            <div id="binarytreeModule" class="module">
+                <div class="module-header">
+                    <h2 id="treeTitle">二叉树可视化</h2>
+                    <div class="tree-controls">
+                        <div class="tree-ops">
+                            <input type="number" id="treeInputValue" placeholder="输入值" min="0" max="999">
+                            <button id="btnTreeInsert" class="btn btn-primary btn-sm">插入</button>
+                            <button id="btnTreeDelete" class="btn btn-danger btn-sm">删除</button>
+                            <button id="btnTreeSearch" class="btn btn-accent btn-sm">查找</button>
+                        </div>
+                        <div class="traversal-btns">
+                            <button class="traversal-btn" data-traversal="preorder">前序遍历</button>
+                            <button class="traversal-btn" data-traversal="inorder">中序遍历</button>
+                            <button class="traversal-btn" data-traversal="postorder">后序遍历</button>
+                            <button class="traversal-btn" data-traversal="levelorder">层序遍历</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-container">
+                    <canvas id="treeCanvas"></canvas>
+                </div>
+                <div class="algorithm-info">
+                    <div class="info-card">
+                        <h4><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"/></svg>遍历结果</h4>
+                        <div id="treeTraversalResult" class="traversal-result">尚未执行遍历</div>
+                    </div>
+                    <div class="info-card">
+                        <h4><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5.2" r="2.2"/><circle cx="6" cy="18" r="2.2"/><circle cx="18" cy="18" r="2.2"/><path d="M12 7.4v4.1M12 11.5H6v4.3M12 11.5h6v4.3"/></svg>树的属性</h4>
+                        <div id="treeStats" class="tree-stats">
+                            <span>节点数 <strong id="treeNodeCount">0</strong></span>
+                            <span>树高度 <strong id="treeHeight">0</strong></span>
+                            <span>是否平衡 <strong id="treeBalanced">是</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 图寻路模块 -->
+            <div id="graphModule" class="module">
+                <div class="module-header">
+                    <h2 id="graphTitle">图寻路算法</h2>
+                    <div class="graph-controls">
+                        <div class="graph-mode">
+                            <button class="mode-btn" data-mode="select">选择模式</button>
+                            <button class="mode-btn active" data-mode="obstacle">障碍模式</button>
+                            <button class="mode-btn" data-mode="start">设置起点</button>
+                            <button class="mode-btn" data-mode="end">设置终点</button>
+                        </div>
+                        <div class="graph-info">
+                            <span>起点: <strong id="graphStart">-</strong></span>
+                            <span>终点: <strong id="graphEnd">-</strong></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="canvas-container graph-canvas-container">
+                    <canvas id="graphCanvas"></canvas>
+                </div>
+                <div class="legend">
+                    <span class="legend-item"><i class="legend-swatch cell-start"></i>起点</span>
+                    <span class="legend-item"><i class="legend-swatch cell-end"></i>终点</span>
+                    <span class="legend-item"><i class="legend-swatch cell-obstacle"></i>障碍</span>
+                    <span class="legend-item"><i class="legend-swatch cell-visited"></i>已访问</span>
+                    <span class="legend-item"><i class="legend-swatch cell-frontier"></i>待探索</span>
+                    <span class="legend-item"><i class="legend-swatch cell-path"></i>最短路径</span>
+                </div>
+                <div class="algorithm-info">
+                    <div class="info-card">
+                        <h4><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 11v5.5M12 7.9v.3"/></svg>算法说明</h4>
+                        <p id="graphDesc">广度优先搜索 (BFS) 是一种逐层遍历的算法，使用队列来存储待访问的节点，适合在无权图中寻找最短路径。</p>
+                    </div>
+                    <div class="info-card">
+                        <h4><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13h3.5l2.5-7 4 14 2.5-7H20"/></svg>搜索统计</h4>
+                        <div class="graph-stats">
+                            <span>访问节点 <strong id="graphVisited">0</strong></span>
+                            <span>路径长度 <strong id="graphPath">-</strong></span>
+                            <span>耗时 <strong id="graphTime">0ms</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 代码展示面板 -->
+        <aside class="code-panel">
+            <h3 class="code-title">
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 8l-4.5 4L9 16M15 8l4.5 4L15 16"/></svg>
+                算法代码
+            </h3>
+            <div class="code-tabs">
+                <button class="code-tab active" data-lang="pseudo">伪代码</button>
+                <button class="code-tab" data-lang="javascript">JavaScript</button>
+            </div>
+            <div class="code-content">
+                <pre id="codeBlock"><code>// 选择一个算法开始查看代码</code></pre>
+            </div>
+        </aside>
+    </main>
+
+    <!-- 复杂度对比模态框 -->
+    <div id="compareModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>算法性能对比</h2>
+                <button class="modal-close" id="closeCompareModal" aria-label="关闭">
+                    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- 对比视图由 JS 动态渲染 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>© 2026 算法可视化教学平台 | Web 程序设计课程项目 | 使用 HTML + CSS + JavaScript 构建</p>
+    </footer>
+
+    <script src="js/algorithms/sorting.js"></script>
+    <script src="js/algorithms/binaryTree.js"></script>
+    <script src="js/algorithms/graph.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
